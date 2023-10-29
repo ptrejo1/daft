@@ -1,0 +1,19 @@
+syntax = "proto3";
+package raft;
+
+service Raft {
+
+  rpc RequestVote (VoteRequest) returns (VoteReply);
+}
+
+message VoteRequest {
+  uint32 term = 1;
+  string candidate_id = 2;
+  uint32 last_log_index = 3;
+  uint32 last_log_term = 4;
+}
+
+message VoteReply {
+  uint32 term = 1;
+  bool vote_granted = 2;
+}

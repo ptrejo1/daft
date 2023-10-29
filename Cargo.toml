@@ -1,0 +1,24 @@
+[package]
+name = "daft"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "daft-server"
+path = "src/server.rs"
+
+[dependencies]
+clap = {version = "4.4.6", features = ["derive"]}
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.107"
+tonic = "0.10"
+prost = "0.12"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+anyhow = "1.0.75"
+futures-util = "0.3.28"
+env_logger = "0.10.0"
+log = "0.4.20"
+rand = "0.8.5"
+
+[build-dependencies]
+tonic-build = "0.10"
