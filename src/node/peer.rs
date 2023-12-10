@@ -1,7 +1,7 @@
 use crate::node::config::Address;
 use crate::node::peer_client::PeerClient;
 use anyhow::Result;
-use crate::node::raft_rpc::VoteReply;
+use crate::node::raft_rpc::{AppendEntriesReply, VoteReply};
 
 
 #[derive(Debug)]
@@ -21,6 +21,14 @@ impl Peer {
         // todo: fill in log term and index
         let reply = self.peer_client.request_vote(
             timeout, term, candidate_id, 0, 0
+        ).await?;
+
+        Ok(reply)
+    }
+
+    pub async fn append_entries(&self, timeout: u64, term: u32, leader_id: String) -> Result<AppendEntriesReply> {
+        let reply = self.peer_client.append_entries(
+            timeout, term, leader_id, 0, 0, vec![], 0
         ).await?;
 
         Ok(reply)

@@ -34,7 +34,7 @@ async fn start_server(server_args: &ServerArgs) {
         .expect("Valid path to config");
     let config: Config = serde_json::from_str(&raw_config)
         .expect("Valid config value");
-    let daft_server = DaftServer::new(config).await;
+    let daft_server = DaftServer::new(config);
 
     daft_server.start().await;
 }

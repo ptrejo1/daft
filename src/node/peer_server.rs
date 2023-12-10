@@ -3,7 +3,7 @@ use tonic::{Request, Response, Status};
 use tonic::transport::Server;
 use crate::node::config::Address;
 use crate::node::membership::Membership;
-use crate::node::raft_rpc::{VoteReply, VoteRequest};
+use crate::node::raft_rpc::{VoteReply, VoteRequest, AppendEntriesRequest, AppendEntriesReply};
 use crate::node::raft_rpc::raft_server::{Raft, RaftServer};
 use anyhow::Result;
 use log::info;
@@ -57,5 +57,26 @@ impl Raft for RaftService {
         };
 
         Ok(Response::new(reply))
+    }
+
+    async fn append_entries(
+        &self,
+        request: Request<AppendEntriesRequest>
+    ) -> Result<Response<AppendEntriesReply>, Status> {
+        let append_entries_request = request.into_inner();
+        info!("AppendEntriesRequest");
+
+        let current_term = self.membership.current_term.read().await.clone();
+        let success = append_entries_request.term < current_term;
+
+        // empty signifies a heartbeat
+        if append_entries_request.entries.is_empty() {
+            self.membership.reset_election_timeout().await;
+        }
+
+        Ok(Response::new(AppendEntriesReply {
+            term: current_term,
+            success,
+        }))
     }
 }

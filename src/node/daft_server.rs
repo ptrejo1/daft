@@ -12,7 +12,7 @@ pub struct DaftServer {
 
 impl DaftServer {
 
-    pub async fn new(config: Config) -> Self {
+    pub fn new(config: Config) -> Self {
         let membership = Arc::new(
             Membership::new(
                 config.address.to_string(),

@@ -1,16 +1,16 @@
 {
   "address": {
     "host": "127.0.0.1",
-    "port": 7500
+    "port": 7502
   },
   "nodes": [
     {
       "host": "127.0.0.1",
-      "port": 7501
+      "port": 7500
     },
     {
       "host": "127.0.0.1",
-      "port": 7502
+      "port": 7501
     }
   ],
   "heartbeat_interval": 100
